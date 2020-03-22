@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/slot.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/slot.css"/>
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <title>The warehouses list</title>
+</head>
+<body>
+
+<div>
+    <div class="well">
+        <div class="panel-body">
+            <h1>The warehouses list</h1>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin: auto; float: left; width: 1600px;" class="container-fluid text-center">
+    <div style="margin: auto;" >
+        <div style="margin: auto;" class="col-sm-8 text-left">
+
+            <div>
+                <a th:href="@{/}"><img src="/img/back.png" height="45" width="45"/></a>
+            </div>
+            <div>
+                <br/>
+            </div>
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td><b>ID</b></td>
+                        <td><b>Name</b></td>
+                        <td></td>
+                    </tr>
+                    </thead>
+
+                    <!--/*@thymesVar id="warehouses" type="java.util.Collection"*/-->
+                    <!--/*@thymesVar id="warehouse" type="warehouse_planning.model.Warehouse"*/-->
+                    <tr th:each="warehouse : ${warehouses}">
+                        <td>
+                            <a th:href="@{/warehouses/{id}/slots(id=${warehouse.getId()})}"
+                               th:text="${warehouse.getId()}"/>
+                        </td>
+                        <td>
+                            <a th:href="@{/warehouses/{id}/slots(id=${warehouse.getId()})}"
+                               th:text="${warehouse.getName()}"/>
+                        </td>
+                        <td>
+                            <input type="image" src="/img/remove.png" height="30" width="30"
+                                   th:onclick="'deleteWarehouse(' + ${warehouse.getId()} + ')'" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-3 text-left container" >
+
+            <div class="row" style="border: 2px inset grey; margin: 10px;">
+                <form th:action="@{/warehouses/}" method="post" style="margin: 7px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="guid" name="name" placeholder="Name" required/>
+                        <small class="form-text text-muted">Name</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add warehouse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

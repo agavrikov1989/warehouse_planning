@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/slot.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/slot.css"/>
+    <title>Slots search</title>
+</head>
+<body>
+
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-8 text-left">
+            <div>
+                <div class="well">
+                    <div class="panel-body">
+                        <h1>
+                            <span th:text="'Slots search'"/>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/warehouses/{id}/slots(id=${warehouseId})}"><img src="/img/back.png" height="45" width="45"/></a>
+            </div>
+            <div>
+                <br/>
+            </div>
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td><b>Slot number</b></td>
+                            <td><b>Planning date</b></td>
+                            <td><b>Time from</b></td>
+                            <td><b>Time to</b></td>
+                            <td><b>Conveyor</b></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+
+                    <!--/*@thymesVar id="slots" type="java.util.Collection"*/-->
+                    <!--/*@thymesVar id="slot" type="warehouse_planning.model.Slot"*/-->
+                    <tr th:each="slot : ${slots}">
+                        <td th:text="${slot.getGuid()}"/>
+                        <td>
+                            <a th:href="@{/warehouses/{id}/slots(id=${warehouseId},date=${slot.getDate()},page=1)}"
+                               th:text="${slot.getDate()}"/>
+                        </td>
+                        <td th:text="${slot.getTimeFrom()}"/>
+                        <td th:text="${slot.getTimeTo()}"/>
+                        <td>
+                            <a th:if="${slot.getConveyorId() != 0}"
+                               th:href="@{/warehouses/{id}/slots(id=${warehouseId},conveyorId=${slot.getConveyorId()},page=1)}"
+                               th:text="${slot.getConveyorId()}"/>
+                        </td>
+                        <td>
+                            <input type="image" src="/img/remove.png" height="30" width="30"
+                                   th:onclick="'deleteSlot(' + ${warehouseId} + ', ' + ${slot.getId()} + ')'" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div align="center">
+                <div align="center" class="pagination">
+                    <a th:if="${page &gt; 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${1})}"
+                       th:text="'««'"/>
+                    <a th:if="${page &gt; 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${page - 1})}"
+                       th:text="'«'"/>
+                    <a th:if="${page == 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${page})}"
+                       th:text="' '"/>
+                    <!--/*@thymesVar id="pages" type="java.util.List"*/-->
+                    <!--/*@thymesVar id="p" type="java.lang.Integer"*/-->
+                    <a th:each="p : ${pages}" th:href="@{/warehouses/{id}/slots(id=${warehouseId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${p})}"
+                       th:text="${p}"
+                       th:class="${p == page} ? active"/>
+                    <a th:if="${page &lt; maxPage}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, conveyorId=${conveyorId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${page + 1})}"
+                       th:text="'»'"/>
+                    <a th:if="${page &lt; maxPage}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, conveyorId=${conveyorId}, guid=${guid}, conveyorId=${conveyorId}, dateFrom=${dateFrom}, timeFrom=${timeFrom}, dateTo=${dateTo}, timeTo=${timeTo}, page=${maxPage})}"
+                       th:text="'»»'"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

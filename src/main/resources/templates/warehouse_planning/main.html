@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/slot.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/slot.css"/>
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <title>Welcome!</title>
+</head>
+<body>
+
+<div>
+    <div class="well" th:switch="${language}">
+        <div class="panel-body" th:case="${T(warehouse_planning.config.Language).RU}">
+            <p class="h2">Добро пожаловать в систему оптимизации расписания складов!</p>
+        </div>
+        <div class="panel-body" th:case="${T(warehouse_planning.config.Language).EN}">
+            <p class="h2">Welcome to the warehouse planning system!</p>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin: auto; float: left; width: 1600px;" class="container-fluid text-center">
+    <div style="margin: auto;" >
+        <div style="margin: auto;" class="col-sm-8 text-left">
+
+            <div>
+                <a th:href="@{/warehouses/}"><img src="/img/start.png" height="60" width="60"/></a>
+            </div>
+            <div>
+                <br/>
+            </div>
+
+            <!--/*@thymesVar id="language" type="warehouse_planning.config.Language"*/-->
+            <div class="well" th:switch="${language}">
+                <div class="panel-body" th:case="${T(warehouse_planning.config.Language).RU}">
+                    <p class="h3">Функционал</p>
+                    <p>
+                        Работа на складе представлена <a href="/warehouses/1/slots">списком слотов</a>.
+                        Слот – это интервал времени, определяющий задачу для склада.
+                    </p>
+                    <input type="image" src="/img/tasks.png" height="550" width="800"/>
+                    <p>
+                        Система оптимально распределяет все работы между бригадами и минимизирует их количество.
+                    </p>
+                    <p>
+                        Система поддерживает <a href="/warehouses/">планирование нескольких складов</a>. Процесс автоматизации занимает доли секунды.
+                    </p>
+
+                    <p class="h3">Проблемы бизнеса</p>
+                    <ul>
+                        <li>Отсутствие автоматического планирования</li>
+                        <li>Ручное планирование не оптимально, хаотично, тратит много времени</li>
+                        <li>Непрозрачность ручного контроля</li>
+                        <li>Завышенные бюджеты на сотрудников</li>
+                        <li>Ручные правки в ходе работы</li>
+                    </ul>
+
+                    <p class="h3">Цели проекта</p>
+                    <p>
+                        Внедрение системы позволит:
+                    </p>
+                    <ul>
+                        <li>Минимизировать количество бригад на складе</li>
+                        <li>Сократить “лишних” сотрудников</li>
+                        <li>Минимизировать простои</li>
+                        <li>Снизить человеческий фактор при планировании</li>
+                    </ul>
+
+                    <p class="h3">Преимущества</p>
+                    <ul>
+                        <li>Полная автоматизация</li>
+                        <li>Высокая производительность</li>
+                        <li>Масштабируемость</li>
+                        <li>Сокращение расходов на персонал</li>
+                    </ul>
+                </div>
+                <div class="panel-body" th:case="${T(warehouse_planning.config.Language).EN}">
+                    <p class="h3">Functionality</p>
+                    <p>
+                        Work in the warehouse is represented by <a href="/warehouses/1/slots">the slots list</a>.
+                        Slot is the time interval that defines the task for the warehouse.
+                    </p>
+                    <input type="image" src="/img/tasks.png" height="550" width="800"/>
+                    <p>
+                        The system optimally distributes all the work between conveyors and minimizes their quantity.
+                    </p>
+                    <p>
+                        The system supports <a href="/warehouses/">multiple warehouse planning</a>. The automation process takes milliseconds.
+                    </p>
+
+                    <p class="h3">Business issues</p>
+                    <ul>
+                        <li>Lack of auto planning</li>
+                        <li>Manual planning is not optimal, chaotic, spends a lot of time</li>
+                        <li>Manual control opacity</li>
+                        <li>Inflated budgets for employees</li>
+                        <li>Manual edits during work</li>
+                    </ul>
+
+                    <p class="h3">Project goals</p>
+                    <p>
+                        Implementation will allow:
+                    </p>
+                    <ul>
+                        <li>Minimize the quantity of conveyors in warehouse</li>
+                        <li>Reduce "extra" employees</li>
+                        <li>Minimize downtime</li>
+                        <li>Reduce the human factor in planning</li>
+                    </ul>
+
+                    <p class="h3">Benefits</p>
+                    <ul>
+                        <li>Full automation</li>
+                        <li>High performance</li>
+                        <li>Scalability</li>
+                        <li>Reduce staff costs</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

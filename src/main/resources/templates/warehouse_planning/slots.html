@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/slot.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/slot.css"/>
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <title>Slots list</title>
+</head>
+<body>
+
+<div>
+    <div class="well">
+        <div class="panel-body">
+            <h1>Welcome!</h1>
+            <p>
+                This is demo of <b>warehouses planning system</b><br/>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin: auto; float: left; width: 1600px;" class="container-fluid text-center">
+    <div style="margin: auto;" >
+        <div style="margin: auto;" class="col-sm-8 text-left">
+            <div>
+                <form th:action="@{/warehouses/{id}/slots(id=${warehouseId})}">
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <input type="text" name="guid" class="form-control"
+                                   style="width: 200px" placeholder="Slot number"/>
+                            <input type="number" name="conveyorId" class="form-control"
+                                   style="width: 120px" placeholder="Conveyor" min="1"/>
+                            <input type="text" name="dateFrom" class="form-control"
+                                   style="width: 160px" placeholder="Date from"
+                                   onfocus="(this.type='date')" onblur="(this.type='text')"/>
+                            <input type="text" name="timeFrom" class="form-control"
+                                   style="width: 130px" placeholder="Time from"
+                                   onfocus="(this.type='time')" onblur="(this.type='text')"/>
+                            <input type="text" name="dateTo" class="form-control"
+                                   style="width: 160px" placeholder="Date to"
+                                   onfocus="(this.type='date')" onblur="(this.type='text')"/>
+                            <input type="text" name="timeTo" class="form-control"
+                                   style="width: 130px" placeholder="Time to"
+                                   onfocus="(this.type='time')" onblur="(this.type='text')"/>
+                            <button class="btn btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <br/>
+            </div>
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td><b>Slot number</b></td>
+                        <td><b>Planning date</b></td>
+                        <td><b>Time from</b></td>
+                        <td><b>Time to</b></td>
+                        <td><b>Conveyor</b></td>
+                        <td></td>
+                    </tr>
+                    </thead>
+
+                    <!--/*@thymesVar id="slots" type="java.util.Collection"*/-->
+                    <!--/*@thymesVar id="slot" type="warehouse_planning.model.Slot"*/-->
+                    <tr th:each="slot : ${slots}">
+                        <td th:text="${slot.getGuid()}"/>
+                        <td>
+                            <a th:href="@{/warehouses/{id}/slots(id=${warehouseId},date=${slot.getDate()},page=1)}"
+                               th:text="${slot.getDate()}"/>
+                        </td>
+                        <td th:text="${slot.getTimeFrom()}"/>
+                        <td th:text="${slot.getTimeTo()}"/>
+                        <td>
+                            <a th:if="${slot.getConveyorId() != 0}"
+                               th:href="@{/warehouses/{id}/slots(id=${warehouseId},conveyorId=${slot.getConveyorId()},page=1)}"
+                               th:text="${slot.getConveyorId()}"/>
+                        </td>
+                        <td>
+                            <input type="image" src="/img/remove.png" height="30" width="30"
+                                   th:onclick="'deleteSlot(' + ${warehouseId} + ', ' + ${slot.getId()} + ')'" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div align="center">
+                <div align="center" class="pagination">
+                    <a th:if="${page &gt; 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${1})}"
+                       th:text="'««'"/>
+                    <a th:if="${page &gt; 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${page - 1})}"
+                       th:text="'«'"/>
+                    <a th:if="${page == 1}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${page})}"
+                       th:text="' '"/>
+                    <!--/*@thymesVar id="pages" type="java.util.List"*/-->
+                    <!--/*@thymesVar id="p" type="java.lang.Integer"*/-->
+                    <a th:each="p : ${pages}" th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${p})}"
+                       th:text="${p}"
+                       th:class="${p == page} ? active"/>
+                    <a th:if="${page &lt; maxPage}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${page + 1})}"
+                       th:text="'»'"/>
+                    <a th:if="${page &lt; maxPage}"
+                       th:href="@{/warehouses/{id}/slots(id=${warehouseId}, page=${maxPage})}"
+                       th:text="'»»'"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 text-left container" >
+
+            <div class="row" style="border: 2px inset grey; margin: 10px;">
+                <form th:action="@{/warehouses/{id}/download(id=${warehouseId})}" method="post" enctype="multipart/form-data" style="margin: 7px;">
+                    <div class="form-group">
+                        <div class="file-loading">
+                            <input type="file" class="custom-file-input" name="file" id="form-control-file" required/>
+                            <button type="submit" class="btn btn-primary">Download slots</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" style="border: 2px inset grey; margin: 10px;">
+                <form th:action="@{/warehouses/{warehouseId}/slots(warehouseId=${warehouseId})}" method="post" style="margin: 7px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="guid" name="guid" placeholder="Slot number" required/>
+                        <small class="form-text text-muted">Slot number</small>
+                    </div>
+                    <div class="form-group col-md-10">
+                        <input style="width: 160px" type="date" class="form-control form-control-sm" id="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" placeholder="Planning date" required/>
+                        <small class="form-text text-muted">Planning date</small>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <input style="width: 100px" type="time" class="form-control form-control-sm" id="timeFrom" name="timeFrom" th:value="'00:00'" placeholder="Time from" required/>
+                            <small class="form-text text-muted">Time from</small>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <input style="width: 100px" type="time" class="form-control form-control-sm" id="timeTo" name="timeTo" th:value="'23:59'" placeholder="Time to" required/>
+                            <small class="form-text text-muted">Time to</small>
+                        </div>
+                    </div>
+                    <input type="hidden" name="warehouseId" th:value="${warehouseId}"/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add slot</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" style="margin: 20px;">
+                <button class="btn btn-success btn-lg" style="width: 250px;" th:onclick="'planning(' + ${warehouseId} + ', ' + ${page} + ')'" th:text="'Planning'"></button>
+            </div>
+
+            <div class="row" style="margin: 20px;">
+                <button class="btn btn-danger btn-lg" style="width: 250px;" th:onclick="'deleteSlots(' + ${warehouseId} + ', ' + ${page} + ')'" th:text="'Delete all slots'"></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
